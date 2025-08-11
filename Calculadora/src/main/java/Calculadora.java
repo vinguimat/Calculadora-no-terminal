@@ -15,11 +15,17 @@ public class Calculadora {
         try {
             while (true) {
                 System.out.print("> ");
-                String entrada = scanner.nextLine().replaceAll("\\s+", "");
-                if (entrada.equalsIgnoreCase("sair")) break;
+                String entrada = scanner.nextLine().replaceAll("\\s+", ""); // limpa espaços em branco inseridos
+                if (entrada.equalsIgnoreCase("sair")) break; // para o loop
+
+                /*
+                 * usa a expressão regular com lookbehind e lookahead para
+                 * capturar e cortar sempre antes e depois de um operador, sem exclui-los
+                 */
 
                 String[] partes = entrada.split("(?<=[-+*/])|(?=[-+*/])");
 
+                // uma variável recebe o valor na posição zero do array de strings e a converte para double
                 double primeiroNumero;
                 try {
                     primeiroNumero = Double.parseDouble(partes[0]);
@@ -28,10 +34,12 @@ public class Calculadora {
                     continue;
                 }
 
+                // define que os operadores sempre terão posições impares, assim ficando entre os algarismos
                 for (int i = 1; i < partes.length; i += 2) {
                     char operador = partes[i].charAt(0);
                     double proximoNumero;
 
+                    // define a posição depois do operador como algarismo
                     try {
                         proximoNumero = Double.parseDouble(partes[i + 1]);
                     } catch (NumberFormatException e) {
@@ -39,6 +47,7 @@ public class Calculadora {
                         continue;
                     }
 
+                    // realiza as operações
                     switch (operador) {
                         case '+':
                             primeiroNumero += proximoNumero;
